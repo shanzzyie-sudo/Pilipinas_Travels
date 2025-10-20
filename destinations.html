@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pilipinas Travels — Destinations</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* --- General Page Layout --- */
+    /* Elegant Home Button in Header */
+nav a {
+  position: relative;
+  padding: 6px 15px;
+  border-radius: 25px;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  background: linear-gradient(135deg, #ff9800, #ffc107);
+  color: #fff;
+  text-decoration: none;
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f9f8;
+      margin: 0;
+      color: #333;
+    }
+
+    /* --- Header --- */
+    header {
+      background-color: #004d40;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* --- Search Bar --- */
+    .search-wrapper {
+      position: relative;
+      max-width: 500px;
+      margin: 40px auto 20px;
+    }
+
+    .search-bar {
+      width: 100%;
+      padding: 12px 45px 12px 20px;
+      font-size: 1rem;
+      border: 2px solid #00796b;
+      border-radius: 30px;
+      outline: none;
+      transition: 0.3s;
+      background-color: #fff;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar:focus {
+      border-color: #009688;
+      box-shadow: 0 0 10px rgba(0, 150, 136, 0.3);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #00796b;
+      font-size: 1.3rem;
+      pointer-events: none;
+    }
+
+    /* --- Filter Buttons --- */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    .btn-filter {
+      background-color: #00796b;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+
+    .btn-filter:hover {
+      background-color: #009688;
+    }
+
+    /* --- Cards Grid --- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 0 30px 50px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      margin: 12px 15px 0;
+      color: #004d40;
+    }
+
+    .card p {
+      margin: 6px 15px 12px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .tags {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 15px 15px;
+    }
+
+    .tag {
+      background-color: #e0f2f1;
+      color: #00796b;
+      border-radius: 12px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+    }
+
+    /* --- Modal --- */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      border: none;
+      background: transparent;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .meta {
+      padding: 20px;
+    }
+
+    /* --- Footer --- */
+    footer {
+      background-color: #004d40;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">Pilipinas Travels 🇵🇭</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="destinations">
+    <div class="search-wrapper">
+      <input type="text" id="search" placeholder="Search destinations..." oninput="applySearch()" class="search-bar" />
+      <span class="search-icon">🔍</span>
+    </div>
+
+    <div class="controls">
+      <button class="btn-filter" onclick="resetFilter()">Show all</button>
+      <button class="btn-filter" onclick="filterBy('beach')">Beaches</button>
+      <button class="btn-filter" onclick="filterBy('heritage')">Heritage</button>
+      <button class="btn-filter" onclick="filterBy('mountain')">Mountains</button>
+      <button class="btn-filter" onclick="filterBy('church')">Churches</button>
+      <div style="margin-left:auto;font-size:0.9rem;color:#666">Tip: click any card to open a detailed gallery</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <div class="modal" id="modal">
+    <div class="panel">
+      <div style="position:relative">
+        <button class="close" onclick="closeModal()">✕</button>
+        <div class="media" id="modalMedia"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 Pilipinas Travels • Photos sourced from Wikimedia Commons / public domain where available
+  </footer>
+
+  <script>
+    // --- Destinations Data ---
+    const DESTINATIONS = [
+      { id:'boracay', title:'Boracay Island', type:'beach', desc:'White Beach — powdery white sand, sunset paraws, lively nightlife.',
+        images:['https://i.pinimg.com/originals/f9/07/06/f90706b850c29b0ebd7ab18992f6fd4f.jpg','https://info.myboracayguide.com/wp-content/uploads/2023/12/where-is-boracay-located-in-aklan.jpg','https://ik.imagekit.io/tvlk/blog/2022/07/14.Boracay.jpg?tr=dpr-2,w-675'] },
+      { id:'el-nido', title:'El Nido, Palawan', type:'beach', desc:'Limestone cliffs, Big & Small Lagoon — island hopping paradise.',
+        images:['image.5','image.4','image.6'] },
+      { id:'chocolate-hills', title:'Chocolate Hills, Bohol', type: 'heritage', desc:'Over 1,200 conical hills — unique geological formation.',
+        images:['https://media02.stockfood.com/largepreviews/MjE4NjI3MDA3MQ==/70524841-Chocolate-Hills-Bohol-Philippines-Southeast-Asia-Asia.jpg','https://di262mgurvkjm.cloudfront.net/b696b84e-ae59-4555-82da-20f6612b3c3a/M15155_uxga.jpg'] },
+      { id:'banaue', title:'Banaue Rice Terraces', type:'heritage', desc:'2,000-year-old terraces carved by the Ifugao people.',
+        images:['https://wallpaperaccess.com/full/351832.jpg','https://wallpapers.com/images/hd/majestic-banaue-rice-terraces-asia-philippines-endjc37ti379p199.jpg'] },
+      { id:'coron', title:'Coron, Palawan', type:'beach', desc:'Wartime shipwrecks, Kayangan Lake, Twin Lagoon.',
+        images:['https://www.gettingstamped.com/wp-content/uploads/2014/03/Coron-Palawan-Philippines-Travel-Guide-Featured-Image-768x432.jpg','https://mlafqlkvsrtu.i.optimole.com/cb:hy5C.6711a/w:1440/h:1080/q:mauto/f:best/https://islandhoppinginthephilippines.com/palawan/wp-content/uploads/2023/03/Barracuda-lake-top-spot-to-visit-coron-palawan-scaled.jpg'] },
+      { id:'vigan', title:'Vigan City, Ilocos Sur', type:'heritage', desc:'Spanish colonial streets — Calle Crisologo and kalesa rides.',
+        images:['https://images.squarespace-cdn.com/content/v1/5a87961cbe42d637c54cab93/1552231338455-XA3XSBZIKINSH0RNFDDS/vigan-philippines-city-guide%2B%2Bthings-to-do-see','https://th.bing.com/th/id/R.ffcf1e94cc7c6fb68ea956dbc0073ea6?rik=7dEs1Jtp%2b1h1aA&riu=http%3a%2f%2f2.bp.blogspot.com%2f-N-1QkxigobQ%2fT-cp2x-uP9I%2fAAAAAAAAA0I%2f8CI4P3koFtg%2fs1600%2fvigan.jpg&ehk=KMdz93ADvFBn1aHDXSeJD7mi5uTcSwU1R1w9j%2bOmxWA%3d&risl=&pid=ImgRaw&r=0'] },
+      { id:'mt-apo', title:'Mount Apo', type:'mountain', desc:'Highest peak in the Philippines — biodiversity and hiking.',
+        images:['https://jontotheworld.com/wp-content/uploads/2022/05/Mount-Apo-2-e1653058737189.jpg','https://cdn.britannica.com/17/166817-050-1BDC8905/Mount-Apo-island-Mindanao-Philippines.jpg'] },
+      { id:'Mt-Tupira', title:'Mt-Tupira', type:'mountain', desc:'Mount Tupira is a scenic, accessible mountain in Bantay, Ilocos Sur, offering rugged hikes, panoramic views, and the prominent Caniao Radar Station, ideal for adventure and nature enthusiasts..',
+        images:['https://i.ytimg.com/vi/iT8PxjCsoVQ/maxresdefault.jpg',
+        'https://live.staticflickr.com/65535/50952112371_10431e4001.jpg'] },
+      { id:'cebu', title:'Cebu City', type:'heritage', desc:"Magellan's Cross, Basilica del Santo Niño, and close to great diving spots.",
+        images:['https://i.pinimg.com/originals/79/15/8e/79158e7a26b4fd38fab9cd860098dc6a.jpg','https://www.discoverthephilippines.com/wp-content/uploads/2021/01/article-cover-photo-cebu-city-guide.jpg'] },
+      { id:'siargao', title:'Siargao Island', type:'beach', desc:'Cloud 9 surf break, Sugba Lagoon, and island hopping.',
+        images:['https://www.cherifaistesvalises.com/wp-content/uploads/2025/03/1-52.jpg','https://1.bp.blogspot.com/-rUyie4zHTWE/Us0lT8i2pLI/AAAAAAAABeQ/hne6lccSj_4/s1600/TSE+siargao026782013+(133).JPG'] },
+      { id:'tagaytay', title:'Tagaytay', type:'mountain', desc:'Cool climate and view of Taal Volcano and lake.',
+        images:['https://www.discoverthephilippines.com/wp-content/uploads/2021/10/article-cover-photo-guide-tagaytay.jpg','https://travelinspires.org/wp-content/uploads/2019/11/Tagaytay-philippines-travel-guide.jpg'] },
+
+      /* --- Churches --- */
+      { id:'san-agustin', title:'San Agustin Church, Manila', type:'church',
+        desc:'Oldest stone church in the Philippines — UNESCO World Heritage Site with intricate Baroque details.',
+        images:[
+          'https://secret-ph.com/wp-content/uploads/2023/01/History-of-San-Agustin-Church-in-Manila--1024x536.jpg',
+          'https://www.timetravelturtle.com/wp-content/uploads/2016/01/Philippines-2015-9_new.jpg'
+        ]},
+      { id:'miagao', title:'Miag-ao Church, Iloilo', type:'church',
+        desc:'Built in 1797 — known for its unique Baroque architecture and sculpted facade symbolizing Filipino culture.',
+        images:[
+          'https://iloilodirectory.com/wp-content/uploads/2023/02/2048px-Miag-ao_Church_UNESCO.jpeg',
+          'https://1.bp.blogspot.com/-5Dm5nZtIRWg/XzATAFQUUoI/AAAAAAAAXvo/JsM4AH3g10QVdk6G13zIqNxMt0X0lvWagCLcBGAsYHQ/s1024/MiagaoChurch08.JPG'
+        ]},
+      { id:'bantay-church', title:'Bantay Church, Ilocos Sur', type:'church',
+        desc:'Also known as St. Augustine Parish Church — built in 1590 beside the historic Bantay Bell Tower overlooking Vigan.',
+        images:[
+          'https://farm3.staticflickr.com/2944/15136347879_fc70003d22_o.jpg',
+          'https://live.staticflickr.com/3222/3058906472_454c5bcfae_b.jpg',
+          'https://live.staticflickr.com/891/41036781771_594265d655_b.jpg'
+        ]},
+      { id:'Paoay-Church', title:'Paoay Church', type:'church',
+        desc:'Paoay Church was constructed by the Augustinian friars, led by Father Antonio Estavillo, starting in 1694 and completed in 1710.',
+        images:[
+          'https://www.lakwatsero.com/wp-content/uploads/2022/01/Paoay-Church-1.jpg',
+          'https://www.lakwatsero.com/wp-content/uploads/2022/01/Paoay-Church-03.jpg'
+        ]},
+      { id:'saint-augustine-cdo', title:'Saint Augustine Metropolitan Cathedral, Cagayan de Oro', type:'church',
+        desc:'Also known as Cagayan de Oro Cathedral — built in 1624 and rebuilt in Gothic Revival style. It features stained glass, twin spires, and serves as the city’s main Catholic church.',
+        images:[
+          'https://misadito.com/images/cities/MisamisOriental-CagayandeOro-1024.jpg',
+          'https://blogger.googleusercontent.com/img/a/AVvXsEiu2bQgIYSyx74_AyfhD6-L8fwEf1r_UF1aoQO6mhks4a2-4u8eCh_a1khumQUR3yf2IopAemoUgnUkvnFNISzUetNKpj-2V0dInpxfxrDPPHXtSOsKT7EtG6EYSFw1tW6kbzTU6tqtH-aP3yDd9znrDBnqUir1hT0kxrv7jexWy_eoiEgG5Xzf5o3l7g=w1200-h630-p-k-no-nu',
+          'https://i.ytimg.com/vi/zPm0niS6g3A/maxresdefault.jpg'
+        ]},
+      { id:'quiapo-church', title:'Quiapo Church, Manila', type:'church',
+        desc:'Also known as the Minor Basilica of the Black Nazarene — a major pilgrimage site famous for the miraculous Black Nazarene statue and annual Traslación procession.',
+        images:[
+          'https://live.staticflickr.com/6238/6209851945_b9bb6ef961_b.jpg',
+          'https://cimages1.touristlink.com/data/cache/M/A/I/N/A/L/T/A/main-altar-of-the-church_700_0.jpg'
+        ]},
+    ];
+
+    // --- Render & Modal Functions ---
+    const grid = document.getElementById('grid');
+    function render(list){
+      grid.innerHTML = '';
+      list.forEach(d=>{
+        const card = document.createElement('article');
+        card.className='card';
+        card.innerHTML=`
+          <img src="${d.images[0]}" alt="${d.title}" loading="lazy" />
+          <h3>${d.title}</h3>
+          <p>${d.desc}</p>
+          <div class="tags">
+            <span class="tag">${d.type}</span>
+            <button class="tag" style="cursor:pointer" onclick="openModal('${d.id}')">Open gallery</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+    render(DESTINATIONS);
+
+    function filterBy(type){ render(DESTINATIONS.filter(d=>d.type===type)); }
+    function resetFilter(){ render(DESTINATIONS); }
+
+    function applySearch(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      if(!q) return render(DESTINATIONS);
+      const found = DESTINATIONS.filter(d=>d.title.toLowerCase().includes(q)||d.desc.toLowerCase().includes(q));
+      render(found.length?found:DESTINATIONS.filter(d=>d.title.toLowerCase().includes(q.split(' ')[0])));
+    }
+
+    const modal=document.getElementById('modal');
+    function openModal(id){
+      const d=DESTINATIONS.find(x=>x.id===id);
+      if(!d) return;
+      const media=document.getElementById('modalMedia');
+      media.innerHTML=`
+        <div style="min-height:320px"><img src="${d.images[0]}" id="modalMain" alt="${d.title}"/></div>
+        <div class="meta">
+          <h2>${d.title}</h2>
+          <p>${d.desc}</p>
+          <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">
+            ${d.images.map((img,i)=>`<img src="${img}" style="width:80px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="swapMain('${img}')" alt="thumb${i}"/>`).join('')}
+          </div>
+        </div>
+      `;
+      modal.classList.add('open');
+    }
+
+    function swapMain(src){ document.getElementById('modalMain').src=src; }
+    function closeModal(){ modal.classList.remove('open'); }
+    document.addEventListener('keydown',e=>{if(e.key==='Escape') closeModal();});
+  </script>
+</body>
+</html>
